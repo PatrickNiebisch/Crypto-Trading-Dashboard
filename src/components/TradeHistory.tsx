@@ -9,14 +9,14 @@ const TradeHistory: React.FC = () => {
   const tradeHistory = useSelector(
     (state: RootState) => state.wallet.tradeHistory
   );
-  const formatDate = (date: Date): string => {
+  const formatDate = (timestamp: number): string => {
     return new Intl.DateTimeFormat("de-DE", {
       day: "2-digit",
       month: "short",
       year: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    }).format(new Date(date));
+    }).format(new Date(timestamp));
   };
   return (
     <div className="trade-history">

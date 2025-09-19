@@ -18,13 +18,23 @@ import {
   TooltipItem,
 } from "chart.js";
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler);
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 const PriceChart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { prices, error } = useSelector((state: RootState) => state.price);
 
-  const [chartData, setChartData] = useState<{ time: string; price: number }[]>([]);
+  const [chartData, setChartData] = useState<{ time: number; price: number }[]>(
+    []
+  );
   const [lastUpdated, setLastUpdated] = useState<string>("");
 
   useEffect(() => {
@@ -46,15 +56,32 @@ const PriceChart: React.FC = () => {
     return () => clearInterval(interval);
   }, [dispatch]);
 
-  const highestPrice = Math.max(...chartData.map((p) => p.price), 0);
-  const lowestPrice = Math.min(...chartData.map((p) => p.price), 0);
-  const currentPrice = chartData.length > 0 ? chartData[chartData.length - 1].price : 0;
-  const range = highestPrice - lowestPrice;
-  const upperBound = highestPrice + range * 0.1;
-  const lowerBound = lowestPrice - range * 0.1;
+  const highestPrice =
+    chartData.length > 0 ? Math.max(...chartData.map((p) => p.price)) : null;
+  const lowestPrice =
+    chartData.length > 0 ? Math.min(...chartData.map((p) => p.price)) : null;
+  const currentPrice =
+    chartData.length > 0 ? chartData[chartData.length - 1].price : null;
+
+  let upperBound: number;
+  let lowerBound: number;
+
+  if (highestPrice !== null && lowestPrice !== null) {
+    const range = highestPrice - lowestPrice;
+    upperBound = highestPrice + range * 0.05;
+    lowerBound = lowestPrice - range * 0.05;
+  } else {
+    upperBound = 150000;
+    lowerBound = 100000;
+  }
 
   const data = {
-    labels: chartData.map((point) => point.time),
+    labels: chartData.map((point) =>
+      new Date(point.time).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    ),
     datasets: [
       {
         label: "BTC Price",
@@ -77,7 +104,7 @@ const PriceChart: React.FC = () => {
       tooltip: {
         enabled: true,
         callbacks: {
-          label: (context: TooltipItem<'line'>) => {
+          label: (context: TooltipItem<"line">) => {
             const value = context.raw as number;
             return `€${value.toFixed(2)}`;
           },
@@ -113,7 +140,7 @@ const PriceChart: React.FC = () => {
       ) : (
         <>
           <h2 className="main-view-price">
-            {chartData.length > 0 ? `€${currentPrice.toFixed(2)}` : "N/A"}
+            {chartData.length > 0 ? `€${currentPrice!.toFixed(2)}` : "N/A"}
           </h2>
           <p className="text-sm text-gray-500">Last updated: {lastUpdated}</p>
           <div className="main-view-chart">

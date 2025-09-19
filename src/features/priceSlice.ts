@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
 interface PriceState {
-  prices: { time: string; price: number }[]; // Array to store the price history
+  prices: { time: number; price: number }[];
   loading: boolean;
   error: string | null;
 }
@@ -48,7 +48,7 @@ export const fetchPrices = createAsyncThunk(
       }
 
       const pricesInUsd = priceData.data.map((entry: CoinCapPriceEntry) => ({
-        time: new Date(entry.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        time: entry.time,
         price: parseFloat(entry.priceUsd),
       }));
 
@@ -69,7 +69,7 @@ const priceSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchPrices.fulfilled, (state, action: PayloadAction<{ time: string; price: number }[]>) => {
+      .addCase(fetchPrices.fulfilled, (state, action: PayloadAction<{ time: number; price: number }[]>) => {
         state.prices = action.payload;
         state.loading = false;
       })

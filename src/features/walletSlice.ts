@@ -4,7 +4,7 @@ interface Trade {
   action: "Buy" | "Sell";
   amountBTC: number;
   amountEUR: number;
-  time: Date;
+  time: number;
 }
 
 interface WalletState {
@@ -21,31 +21,31 @@ const initialState: WalletState = {
       action: "Buy",
       amountBTC: 0.1,
       amountEUR: -3000, 
-      time: new Date("2023-07-15T10:30:00"), 
+      time: new Date("2023-07-15T10:30:00").getTime(), 
     },
     {
       action: "Buy",
       amountBTC: 0.05,
       amountEUR: -1600, 
-      time: new Date("2023-08-01T14:45:00"),
+      time: new Date("2023-08-01T14:45:00").getTime(),
     },
     {
       action: "Buy",
       amountBTC: 0.2,
       amountEUR: -6200, 
-      time: new Date("2023-08-20T09:15:00"),
+      time: new Date("2023-08-20T09:15:00").getTime(),
     },
     {
       action: "Buy",
       amountBTC: 0.15,
       amountEUR: -5250, 
-      time: new Date("2023-09-05T16:00:00"),
+      time: new Date("2023-09-05T16:00:00").getTime(),
     },
     {
       action: "Buy",
       amountBTC: 0.1,
       amountEUR: -3400,
-      time: new Date("2023-09-18T11:30:00"),
+      time: new Date("2023-09-18T11:30:00").getTime(),
     },
   ],
 };
@@ -61,7 +61,7 @@ const walletSlice = createSlice({
         action: "Buy",
         amountBTC: action.payload.btc,
         amountEUR: -action.payload.eur,
-        time: new Date(),
+        time: new Date().getTime(),
       });
     },
     sellBTC: (state, action: PayloadAction<{ btc: number; eur: number }>) => {
@@ -71,7 +71,7 @@ const walletSlice = createSlice({
         action: "Sell",
         amountBTC: -action.payload.btc,
         amountEUR: action.payload.eur,
-        time: new Date(),
+        time: new Date().getTime(),
       });
     },
   },
