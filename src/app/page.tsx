@@ -1,7 +1,7 @@
 "use client";
 
 import Header from '../components/Header';
-import MainView from '../components/MainView';
+import PriceChart from '../components/PriceChart';
 
 
 const Home: React.FC = () => {
@@ -9,7 +9,7 @@ const Home: React.FC = () => {
   return (
     <div>
       <Header />
-      <MainView />
+      <PriceChart />
     </div>
   );
 };

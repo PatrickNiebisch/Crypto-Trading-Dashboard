@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+
+.header {
+  @apply flex justify-between items-center p-4 bg-gray-800 shadow-md;
+}
+
+.header-logo {
+  @apply text-2xl font-bold text-blue-500;
+}
+
+.header-balance {
+  @apply text-right;
+}
+
+.header-balance p {
+  @apply text-sm text-gray-400;
+}
+
+.header-balance span {
+  @apply font-semibold text-gray-100;
+}
