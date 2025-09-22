@@ -12,71 +12,101 @@ interface TradeDialogProps {
 
 const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const currentPrice = useSelector((state: RootState) =>
-    state.price.prices.length > 0
+
+  const getCurrentPrice = (state: RootState): number => {
+    return state.price.prices.length > 0
       ? state.price.prices[state.price.prices.length - 1].price
-      : 0
-  );
+      : 0;
+  };
+
+  const currentPrice = useSelector(getCurrentPrice);
   const wallet = useSelector((state: RootState) => state.wallet);
 
-  const [eurAmount, setEurAmount] = useState<number | "">("");
-  const [btcAmount, setBtcAmount] = useState<number | "">("");
+  const [eurAmount, setEurAmount] = useState<string>("");
+  const [btcAmount, setBtcAmount] = useState<string>("");
   const [isEurEditing, setIsEurEditing] = useState(false);
   const [isBtcEditing, setIsBtcEditing] = useState(false);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     if (isEurEditing && eurAmount && currentPrice > 0) {
-      const btcValue = parseFloat(
-        (Number(eurAmount) / currentPrice).toFixed(8)
-      );
-      setBtcAmount(btcValue);
+      const eurValue = parseFloat(eurAmount);
+      if (!isNaN(eurValue)) {
+        const btcValue = (eurValue / currentPrice).toFixed(8);
+        setBtcAmount(btcValue);
+        setError("");
+      }
     }
   }, [eurAmount, isEurEditing, currentPrice]);
 
   useEffect(() => {
     if (isBtcEditing && btcAmount && currentPrice > 0) {
-      const eurValue = parseFloat(
-        (Number(btcAmount) * currentPrice).toFixed(2)
-      );
-      setEurAmount(eurValue);
+      const btcValue = parseFloat(btcAmount);
+      if (!isNaN(btcValue)) {
+        const eurValue = (btcValue * currentPrice).toFixed(2);
+        setEurAmount(eurValue);
+        setError("");
+      }
     }
   }, [btcAmount, isBtcEditing, currentPrice]);
 
   const handleEurChange = (value: string) => {
-    setEurAmount(value === "" ? "" : parseFloat(value));
+    setEurAmount(value);
     setIsEurEditing(true);
     setIsBtcEditing(false);
+    setError("");
   };
 
   const handleBtcChange = (value: string) => {
-    setBtcAmount(value === "" ? "" : parseFloat(value));
+    setBtcAmount(value);
     setIsBtcEditing(true);
     setIsEurEditing(false);
+    setError("");
   };
 
   const handleBuy = () => {
-    if (eurAmount && btcAmount) {
-      if (eurAmount > wallet.eur) {
-        alert("Insufficient EUR balance.");
+    const eurValue = parseFloat(eurAmount);
+    const btcValue = parseFloat(btcAmount);
+
+    if (eurAmount && btcAmount && !isNaN(eurValue) && !isNaN(btcValue)) {
+      if (eurValue > wallet.eur) {
+        setError("Insufficient EUR balance.");
         return;
       }
-      dispatch(buyBTC({ btc: btcAmount, eur: eurAmount }));
+
+      dispatch(
+        buyBTC({
+          btc: btcValue,
+          eur: eurValue,
+          price: currentPrice,
+        })
+      );
       onClose();
     } else {
-      alert("Please enter a valid amount.");
+      setError("Please enter a valid amount.");
     }
   };
 
   const handleSell = () => {
-    if (eurAmount && btcAmount) {
-      if (btcAmount > wallet.btc) {
-        alert("Insufficient BTC balance.");
+    const eurValue = parseFloat(eurAmount);
+    const btcValue = parseFloat(btcAmount);
+
+    if (eurAmount && btcAmount && !isNaN(eurValue) && !isNaN(btcValue)) {
+      if (btcValue > wallet.btc) {
+        setError("Insufficient BTC balance.");
         return;
       }
-      dispatch(sellBTC({ btc: btcAmount, eur: eurAmount }));
+
+      dispatch(
+        sellBTC({
+          btc: btcValue,
+          eur: eurValue,
+          price: currentPrice,
+        })
+      );
       onClose();
     } else {
-      alert("Please enter a valid amount.");
+      setError("Please enter a valid amount.");
     }
   };
 
@@ -97,7 +127,7 @@ const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
                 className="trade-input-modern"
                 value={eurAmount}
                 onChange={(e) => handleEurChange(e.target.value)}
-                placeholder="220,23"
+                placeholder="220.23"
               />
               <span className="trade-currency-label">EUR</span>
             </div>
@@ -116,6 +146,12 @@ const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
             </div>
           </div>
 
+           {error && (
+            <div className="trade-error-message">
+              {error}
+            </div>
+          )}
+          
           <div className="trade-dialog-buttons-modern">
             <button
               className="trade-button-modern buy-button"

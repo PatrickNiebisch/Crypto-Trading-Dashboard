@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-/* Vereinfachte PnL-Anzeige für mobile */
 .pnl-display {
   @apply text-center mb-6;
 }

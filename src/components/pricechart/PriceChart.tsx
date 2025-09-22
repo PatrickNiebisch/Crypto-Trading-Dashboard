@@ -13,41 +13,23 @@ import ChartDisplay from "./ChartDisplay";
 const PriceChart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { prices, error } = useSelector((state: RootState) => state.price);
-  const { btc, tradeHistory } = useSelector((state: RootState) => state.wallet);
+
+  const { btc, eur, tradeHistory } = useSelector(
+    (state: RootState) => state.wallet
+  );
 
   const [chartData, setChartData] = useState<{ time: number; price: number }[]>(
     []
   );
   const [_, setLastUpdated] = useState<string>("");
 
-  const getPortfolioData = () => {
-    const buyTrades = tradeHistory.filter((trade) => trade.action === "Buy");
-
-    if (buyTrades.length === 0) {
-      return {
-        btcHoldings: btc,
-        averageBuyPrice: 0,
-        totalInvested: 0,
-      };
-    }
-
-    const totalEurSpent = buyTrades.reduce(
-      (sum, trade) => sum + Math.abs(trade.amountEUR),
-      0
-    );
-    const totalBtcBought = buyTrades.reduce(
-      (sum, trade) => sum + trade.amountBTC,
-      0
-    );
-    const averageBuyPrice =
-      totalBtcBought > 0 ? totalEurSpent / totalBtcBought : 0;
-
-    return {
-      btcHoldings: btc,
-      averageBuyPrice,
-      totalInvested: totalEurSpent,
-    };
+  const getCurrentPrice = (state: RootState): number => {
+    return state.price.prices.length > 0
+      ? state.price.prices[state.price.prices.length - 1].price
+      : 0;
   };
+
+  const currentPrice = useSelector(getCurrentPrice);
 
   useEffect(() => {
     dispatch(fetchPrices());
@@ -72,8 +54,6 @@ const PriceChart: React.FC = () => {
     chartData.length > 0 ? Math.max(...chartData.map((p) => p.price)) : null;
   const lowestPrice =
     chartData.length > 0 ? Math.min(...chartData.map((p) => p.price)) : null;
-  const currentPrice =
-    chartData.length > 0 ? chartData[chartData.length - 1].price : null;
 
   const get24hStats = () => {
     if (chartData.length < 2) return null;
@@ -91,19 +71,33 @@ const PriceChart: React.FC = () => {
   };
 
   const getPortfolioStats = () => {
-    if (!currentPrice) return null;
+    if (!currentPrice || tradeHistory.length === 0) return null;
 
-    const portfolio = getPortfolioData();
-    const currentValue = portfolio.btcHoldings * currentPrice;
-    const totalProfit = currentValue - portfolio.totalInvested;
+    let totalInvested = 0;
+    let totalBtcBought = 0;
+
+    tradeHistory.forEach((trade) => {
+      if (trade.action === "Buy") {
+        totalInvested += trade.amountEUR;
+        totalBtcBought += trade.amountBTC;
+      } else {
+        const soldRatio =
+          trade.amountBTC / (totalBtcBought > 0 ? totalBtcBought : 1);
+        totalInvested -= totalInvested * soldRatio;
+        totalBtcBought -= trade.amountBTC;
+      }
+    });
+
+    const currentValue = btc * currentPrice;
+    const totalProfit = currentValue - totalInvested;
     const profitPercent =
-      portfolio.totalInvested > 0
-        ? (totalProfit / portfolio.totalInvested) * 100
-        : 0;
+      totalInvested > 0 ? (totalProfit / totalInvested) * 100 : 0;
+    const averageBuyPrice = totalBtcBought > 0 ? totalInvested / btc : 0;
 
     return {
-      portfolio,
       currentValue,
+      totalInvested,
+      averageBuyPrice,
       totalProfit,
       profitPercent,
       isProfit: totalProfit >= 0,
@@ -133,11 +127,12 @@ const PriceChart: React.FC = () => {
       {error ? (
         <div className="error-message">{error}</div>
       ) : (
-        <>
-          <div className="text-2xl font-bold text-gray-900 text-center">
+        <div className="compact-layout">
+          <div className="text-3xl font-bold text-gray-900 text-center mb-2">
             BTC
           </div>
-          <div className="price-portfolio-container text-center">
+
+          <div className="price-portfolio-container">
             <PriceDisplay
               currentPrice={currentPrice}
               stats={stats}
@@ -149,12 +144,13 @@ const PriceChart: React.FC = () => {
               <PortfolioStats portfolioStats={portfolioStats} />
             )}
           </div>
+
           <ChartDisplay
             chartData={chartData}
             upperBound={upperBound}
             lowerBound={lowerBound}
           />
-        </>
+        </div>
       )}
     </div>
   );

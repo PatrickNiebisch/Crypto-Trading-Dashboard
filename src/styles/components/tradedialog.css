@@ -93,9 +93,17 @@
   @apply bg-slate-800 hover:bg-slate-700;
 }
 
-.buy-button:hover,
-.sell-button:hover {
+.buy-button:hover {
   @apply bg-teal-700;
+}
+
+.sell-button:hover {
+  @apply bg-red-700;
+}
+
+.trade-error-message {
+  @apply bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg text-sm font-medium mb-4;
+  animation: slideIn 0.3s ease-out;
 }
 
 @media (max-width: 640px) {

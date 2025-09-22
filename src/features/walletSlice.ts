@@ -1,81 +1,138 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface Trade {
+  id: string;
   action: "Buy" | "Sell";
   amountBTC: number;
   amountEUR: number;
-  time: number;
+  price: number;
+  timestamp: number;
 }
 
 interface WalletState {
-  eur: number;
   btc: number;
+  eur: number;
   tradeHistory: Trade[];
 }
 
 const initialState: WalletState = {
-  eur: 10000,
-  btc: 0.6,
-  tradeHistory: [
-    {
-      action: "Buy",
-      amountBTC: 0.1,
-      amountEUR: -3000,
-      time: new Date("2023-07-15T10:30:00").getTime(),
-    },
-    {
-      action: "Buy",
-      amountBTC: 0.05,
-      amountEUR: -1600,
-      time: new Date("2023-08-01T14:45:00").getTime(),
-    },
-    {
-      action: "Buy",
-      amountBTC: 0.2,
-      amountEUR: -6200,
-      time: new Date("2023-08-20T09:15:00").getTime(),
-    },
-    {
-      action: "Buy",
-      amountBTC: 0.15,
-      amountEUR: -5250,
-      time: new Date("2023-09-05T16:00:00").getTime(),
-    },
-    {
-      action: "Buy",
-      amountBTC: 0.1,
-      amountEUR: -3400,
-      time: new Date("2023-09-18T11:30:00").getTime(),
-    },
-  ],
+  btc: 0.005,
+  eur: 10000, 
+  tradeHistory: [ {
+    id: "1",
+    action: "Buy",
+    amountBTC: 0.001,
+    amountEUR: 68.50,
+    price: 68500,
+    timestamp: Date.now() - 86400000 * 5,
+  },
+  {
+    id: "2", 
+    action: "Buy",
+    amountBTC: 0.0015,
+    amountEUR: 103.75,
+    price: 69166.67,
+    timestamp: Date.now() - 86400000 * 3,
+  },
+  {
+    id: "3",
+    action: "Sell", 
+    amountBTC: 0.0005,
+    amountEUR: 34.80,
+    price: 69600,
+    timestamp: Date.now() - 86400000 * 1,
+  },
+  {
+    id: "4",
+    action: "Buy",
+    amountBTC: 0.002,
+    amountEUR: 139.20,
+    price: 69600,
+    timestamp: Date.now() - 3600000 * 4, 
+  },],
 };
+
+
+
+interface TradePayload {
+  btc: number;
+  eur: number;
+  price?: number; 
+}
 
 const walletSlice = createSlice({
   name: "wallet",
   initialState,
   reducers: {
-    buyBTC: (state, action: PayloadAction<{ btc: number; eur: number }>) => {
-      state.btc += action.payload.btc;
-      state.eur -= action.payload.eur;
+    buyBTC: (state, action: PayloadAction<TradePayload>) => {
+      const { btc, eur, price } = action.payload;
+      
+      state.btc += btc;
+      state.eur -= eur;
+      
       state.tradeHistory.push({
+        id: Date.now().toString(),
         action: "Buy",
-        amountBTC: action.payload.btc,
-        amountEUR: -action.payload.eur,
-        time: new Date().getTime(),
+        amountBTC: btc,
+        amountEUR: eur,
+        price: price || 0,
+        timestamp: Date.now(),
       });
     },
-    sellBTC: (state, action: PayloadAction<{ btc: number; eur: number }>) => {
-      state.btc -= action.payload.btc;
-      state.eur += action.payload.eur;
+    
+    sellBTC: (state, action: PayloadAction<TradePayload>) => {
+      const { btc, eur, price } = action.payload;
+      
+      state.btc -= btc;
+      state.eur += eur;
+      
       state.tradeHistory.push({
+        id: Date.now().toString(),
         action: "Sell",
-        amountBTC: -action.payload.btc,
-        amountEUR: action.payload.eur,
-        time: new Date().getTime(),
+        amountBTC: btc,
+        amountEUR: eur,
+        price: price || 0,
+        timestamp: Date.now(),
       });
+    },
+    
+    setInitialBalance: (state, action: PayloadAction<{ btc: number; eur: number }>) => {
+      state.btc = action.payload.btc;
+      state.eur = action.payload.eur;
+    },
+    
+    resetWallet: (state) => {
+      state.btc = 0;
+      state.eur = 10000;
+      state.tradeHistory = [];
+    },
+    
+    migrateFromTradeHistory: (state) => {
+      let btcBalance = 0;
+      let eurBalance = 10000;
+      
+      state.tradeHistory.forEach((trade) => {
+        if (trade.action === "Buy") {
+          btcBalance += trade.amountBTC;
+          eurBalance -= trade.amountEUR;
+        } else {
+          btcBalance -= trade.amountBTC;
+          eurBalance += trade.amountEUR;
+        }
+      });
+      
+      state.btc = btcBalance;
+      state.eur = eurBalance;
     },
   },
 });
 
-export const { buyBTC, sellBTC } = walletSlice.actions;
+export const { 
+  buyBTC, 
+  sellBTC, 
+  setInitialBalance, 
+  resetWallet, 
+  migrateFromTradeHistory 
+} = walletSlice.actions;
+
 export default walletSlice.reducer;

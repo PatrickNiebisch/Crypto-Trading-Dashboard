@@ -93,12 +93,11 @@ const fetchExchangeRate = async (): Promise<number> => {
       throw new Error("Invalid EUR rate in response");
     }
 
-    console.log(`💱 Current USD to EUR rate: ${eurRate}`);
     return eurRate;
   } catch (error) {
     console.error(error);
     console.warn(
-      "⚠️  Could not fetch exchange rate, using fallback rate of 0.85"
+      "Could not fetch exchange rate, using fallback rate of 0.85"
     );
     return 0.85;
   }
@@ -109,11 +108,9 @@ export const fetchPrices = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const API_KEY = process.env.NEXT_PUBLIC_COINCAP_API_KEY;
-      console.log("Using API Key:", API_KEY);
-
       if (!API_KEY) {
         console.warn(
-          "⚠️  No API key found, using mock data. Set NEXT_PUBLIC_COINCAP_API_KEY environment variable for real data."
+          "No API key found, using mock data. Set NEXT_PUBLIC_COINCAP_API_KEY environment variable for real data."
         );
         return {
           prices: getMockPriceData(),
@@ -135,7 +132,7 @@ export const fetchPrices = createAsyncThunk(
 
       if (!priceResponse.ok) {
         console.warn(
-          "⚠️  CoinCap API request failed, falling back to mock data"
+          "CoinCap API request failed, falling back to mock data"
         );
         return {
           prices: getMockPriceData(),
@@ -158,8 +155,8 @@ export const fetchPrices = createAsyncThunk(
           Math.round(parseFloat(entry.priceUsd) * exchangeRate * 100) / 100,
       }));
 
-      console.info("✅ Using live data from CoinCap API, converted to EUR");
-      console.info(`💱 Applied exchange rate: 1 USD = ${exchangeRate} EUR`);
+      console.info(" Using live data from CoinCap API, converted to EUR");
+      console.info(`Applied exchange rate: 1 USD = ${exchangeRate} EUR`);
 
       return {
         prices: pricesInEur,
@@ -168,7 +165,7 @@ export const fetchPrices = createAsyncThunk(
       };
     } catch (error) {
       console.error(error);
-      console.warn("⚠️  Error fetching real data, falling back to mock data");
+      console.warn("Error fetching real data, falling back to mock data");
       return {
         prices: getMockPriceData(),
         dataSource: "mock" as const,

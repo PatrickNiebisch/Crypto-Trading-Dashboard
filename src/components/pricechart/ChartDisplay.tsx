@@ -95,7 +95,7 @@ const ChartDisplay: React.FC<ChartDisplayProps> = ({
         label: "BTC Price",
         data: filteredData.map((point) => point.price),
         borderColor: "#14b8a6",
-        backgroundColor: (context: ScriptableContext<"line">) => {
+        backgroundColor: (context: ScriptableContext<'line'>) => {
           const ctx = context.chart.ctx;
           const gradient = ctx.createLinearGradient(0, 0, 0, 300);
           gradient.addColorStop(0, "rgba(20, 184, 166, 0.3)");

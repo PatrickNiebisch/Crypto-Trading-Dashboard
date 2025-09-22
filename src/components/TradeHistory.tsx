@@ -38,7 +38,7 @@ const TradeHistory: React.FC = () => {
                     ? `+${trade.amountEUR.toFixed(2)} €`
                     : `${trade.amountEUR.toFixed(2)} €`}
                 </td>
-                <td>{formatDate(trade.time)}</td>
+                <td>{formatDate(trade.timestamp)}</td>
               </tr>
             ))}
         </tbody>
