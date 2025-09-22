@@ -97,7 +97,7 @@ const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
                 className="trade-input-modern"
                 value={eurAmount}
                 onChange={(e) => handleEurChange(e.target.value)}
-                placeholder="220.23.00"
+                placeholder="220,23"
               />
               <span className="trade-currency-label">EUR</span>
             </div>
