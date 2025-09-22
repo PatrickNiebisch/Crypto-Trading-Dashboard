@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+.main-view {
+  @apply bg-white text-gray-900 p-4 ;
+}
+
+@media (min-width: 768px) {
+  .main-view {
+    @apply p-6;
+  }
+}
+
+.main-view-header {
+  @apply flex justify-between items-center mb-4 px-4 py-2;
+}
+
+.main-view-title {
+  @apply text-2xl font-bold text-gray-900 text-center mb-2;
+}
+
+@media (min-width: 768px) {
+  .main-view-title {
+    @apply text-3xl;
+  }
+}
+
+.main-view-price {
+  @apply text-4xl font-bold text-gray-900 text-center mb-2;
+}
+
+.main-view-pnl {
+  @apply text-lg text-teal-500 text-center mb-4 font-medium;
+}
+
+.price-section-centered {
+  @apply text-center px-4 py-2;
+}
+
+.crypto-symbol-centered {
+  @apply text-3xl font-bold text-gray-900 text-center mb-2;
+}
+
+.main-view-button {
+  @apply mt-6 mx-4 px-6 py-4 bg-slate-800 text-white rounded-lg shadow-lg font-semibold text-lg transition-all hover:bg-slate-700;
+}
+
+.price-portfolio-container {
+  @apply text-center px-4 mb-2;
+}
+
+.mobile-container {
+  @apply max-w-sm mx-auto bg-white min-h-screen;
+}
+
+.status-bar {
+  @apply flex justify-between items-center px-4 py-2 bg-white text-black font-medium;
+}
+
+.signal-indicator {
+  @apply flex items-center space-x-1;
+}
+
+.balance-display {
+  @apply text-right text-sm;
+}
+
+.balance-amount {
+  @apply font-medium text-gray-600;
+}
+
+.balance-eur {
+  @apply text-gray-500;
+}

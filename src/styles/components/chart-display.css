@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+.chart-container {
+  @apply w-full bg-white px-4 py-1;
+}
+
+.chart-wrapper {
+  @apply relative w-full;
+  height: 300px;
+}
+
+@media (min-width: 768px) {
+  .chart-wrapper {
+    height: 400px;
+  }
+}
+
+.price-labels {
+  @apply absolute right-2 top-4 bottom-4 flex flex-col justify-between text-xs;
+  pointer-events: none;
+}
+
+.price-label-current {
+  @apply bg-teal-500 text-white px-2 py-1 rounded text-xs font-medium;
+}
+
+.price-label-prev {
+  @apply text-gray-400 text-xs;
+}
+
+.chart-wrapper canvas {
+  @apply w-full h-full;
+}

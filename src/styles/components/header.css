@@ -1,22 +1,53 @@
 @import "tailwindcss";
 
-
 .header {
-  @apply flex justify-between items-center p-4 bg-gray-800 shadow-md;
+  @apply flex justify-between items-center px-4 py-2 bg-white;
+}
+
+.header-time {
+  @apply font-semibold text-black text-base;
 }
 
 .header-logo {
-  @apply text-2xl font-bold text-blue-500;
+  @apply text-2xl text-teal-500;
 }
 
 .header-balance {
-  @apply text-right;
+  @apply text-right text-sm;
 }
 
-.header-balance p {
-  @apply text-sm text-gray-400;
+.header-status {
+  @apply text-gray-600 text-sm;
 }
 
-.header-balance span {
-  @apply font-semibold text-gray-100;
+.header-btc-amount {
+  @apply font-medium text-gray-900;
+}
+
+.header-eur-amount {
+  @apply text-gray-500;
+}
+
+.signal-bars {
+  @apply flex space-x-1;
+}
+
+.signal-bar {
+  @apply w-1 bg-black rounded-full;
+}
+
+.signal-bar-1 {
+  @apply h-1;
+}
+
+.signal-bar-2 {
+  @apply h-2;
+}
+
+.signal-bar-3 {
+  @apply h-3;
+}
+
+.signal-bar-4 {
+  @apply h-4;
 }

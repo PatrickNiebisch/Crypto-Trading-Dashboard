@@ -1,0 +1,63 @@
+@import "tailwindcss";
+
+/* Vereinfachte PnL-Anzeige für mobile */
+.pnl-display {
+  @apply text-center mb-6;
+}
+
+.pnl-value {
+  @apply text-base font-medium px-3 py-1 rounded-lg;
+}
+
+.pnl-value.profit {
+  @apply text-teal-500;
+}
+
+.pnl-value.loss {
+  @apply text-red-500;
+}
+
+.portfolio-section {
+  @apply hidden;
+}
+
+@media (min-width: 768px) {
+  .pnl-value {
+    @apply text-lg;
+  }
+}
+@media (min-width: 768px) {
+  .portfolio-section {
+    @apply block bg-white rounded-lg p-4 border border-gray-200;
+  }
+}
+
+@media (min-width: 768px) {
+  .portfolio-title {
+    @apply text-base font-semibold text-teal-500 mb-3 border-b border-gray-200 pb-2;
+  }
+
+  .portfolio-stats {
+    @apply space-y-2;
+  }
+
+  .stat-row {
+    @apply flex justify-between items-center py-1;
+  }
+
+  .stat-label {
+    @apply text-gray-600 text-sm font-medium;
+  }
+
+  .stat-value {
+    @apply text-gray-900 font-medium text-sm;
+  }
+
+  .profit-loss.profit {
+    @apply bg-teal-50 border border-teal-200;
+  }
+
+  .profit-loss.loss {
+    @apply bg-red-50 border border-red-200;
+  }
+}

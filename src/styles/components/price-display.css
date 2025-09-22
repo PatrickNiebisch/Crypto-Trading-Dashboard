@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+.price-section-centered {
+  @apply text-center px-4 py-6;
+}
+
+.price-section {
+  @apply bg-white px-4 py-2;
+}
+
+.crypto-symbol-centered {
+  @apply text-3xl font-bold text-gray-900 text-center mb-4;
+}
+
+.current-price {
+  @apply text-4xl font-bold text-gray-900 text-center mb-3;
+}
+
+@media (min-width: 768px) {
+  .crypto-symbol-centered {
+    @apply text-4xl;
+  }
+}
+
+@media (min-width: 768px) {
+  .current-price {
+    @apply text-4xl;
+  }
+}
+
+.price-change {
+  @apply text-center text-lg font-medium;
+}
+
+.price-change.positive {
+  @apply text-teal-500;
+}
+
+.price-change.negative {
+  @apply text-red-500;
+}
+
+.price-stats {
+  @apply mt-4 space-y-1;
+}

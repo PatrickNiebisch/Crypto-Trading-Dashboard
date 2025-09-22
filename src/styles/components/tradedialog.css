@@ -3,10 +3,11 @@
 .trade-dialog-overlay {
   @apply fixed inset-0 bg-gray-900  flex items-center justify-center z-50;
     background-color: rgba(0, 0, 0, 0.5);
+
 }
 
 .trade-dialog {
-  @apply bg-gray-800 text-gray-200 p-6 rounded-lg w-96 shadow-lg relative z-60;
+  @apply bg-white text-gray-200 p-6 rounded-lg w-96 shadow-lg relative z-60;
 }
 
 .trade-dialog-close {
@@ -14,11 +15,11 @@
 }
 
 .trade-dialog-title {
-  @apply text-xl font-bold text-gray-100 mb-4 text-center;
+  @apply text-xl font-bold text-black mb-4 text-center;
 }
 
 .trade-dialog-label {
-  @apply text-sm font-medium text-gray-300 mb-2 block;
+  @apply text-sm font-medium text-black mb-2 block;
 }
 
 .trade-dialog-input {
@@ -29,10 +30,6 @@
   @apply flex justify-between;
 }
 
-.trade-dialog-button-buy {
-  @apply bg-green-500 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-200;
-}
-
-.trade-dialog-button-sell {
-  @apply bg-red-500 text-white font-bold py-2 px-4 rounded-md hover:bg-red-600 transition duration-200;
+.trade-dialog-button {
+  @apply bg-gray-800 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-200;
 }

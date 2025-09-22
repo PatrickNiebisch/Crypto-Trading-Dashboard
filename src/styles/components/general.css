@@ -1,0 +1,6 @@
+/* Main PriceChart component CSS - imports all component styles */
+
+@import "./main-layout.css";
+@import "./portfolio-stats.css";
+@import "./chart-display.css";
+@import "./price-display.css";

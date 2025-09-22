@@ -1,29 +1,18 @@
 @import "tailwindcss";
 
 .trade-history {
-  @apply mt-8 p-4 bg-gray-800 rounded-lg shadow-md;
+  @apply mt-8 p-4 bg-gray-100 rounded-lg shadow-md;
 }
 
-.trade-history-title {
-  @apply text-xl font-semibold mb-4 text-gray-100;
-}
 
 .trade-history-table {
   @apply w-full text-left border-collapse bg-gray-800 rounded-lg;
 }
 
-.trade-history-table th {
-  @apply py-2 px-4 text-gray-400 bg-gray-700;
-}
-
 .trade-history-table td {
-  @apply py-2 px-4 text-gray-200;
+  @apply py-2 px-4 text-black;
 }
 
-.trade-history-row:nth-child(even) {
-  @apply bg-gray-700;
-}
-
-.trade-history-row:nth-child(odd) {
-  @apply bg-gray-800;
+.trade-history-row {
+  @apply bg-gray-100;
 }
