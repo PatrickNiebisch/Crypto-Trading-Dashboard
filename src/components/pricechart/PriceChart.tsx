@@ -3,7 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../../app/store";
-import { fetchPrices } from "../../features/priceSlice";
+import {
+  fetchPrices,
+  selectCurrentCryptoPrices,
+  selectCurrentCryptoError,
+  SUPPORTED_CRYPTOS,
+} from "../../features/priceSlice";
 import "../../styles/components/general.css";
 
 import PriceDisplay from "./PriceDisplay";
@@ -12,9 +17,16 @@ import ChartDisplay from "./ChartDisplay";
 
 const PriceChart: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { prices, error } = useSelector((state: RootState) => state.price);
 
-  const { btc, eur, tradeHistory } = useSelector(
+  const prices = useSelector(selectCurrentCryptoPrices);
+  const error = useSelector(selectCurrentCryptoError);
+
+  const activeCrypto = useSelector(
+    (state: RootState) => state.price.activeCrypto
+  );
+  const activeCryptoConfig = SUPPORTED_CRYPTOS[activeCrypto];
+
+  const { btc, tradeHistory } = useSelector(
     (state: RootState) => state.wallet
   );
 
@@ -24,8 +36,9 @@ const PriceChart: React.FC = () => {
   const [_, setLastUpdated] = useState<string>("");
 
   const getCurrentPrice = (state: RootState): number => {
-    return state.price.prices.length > 0
-      ? state.price.prices[state.price.prices.length - 1].price
+    const currentPrices = selectCurrentCryptoPrices(state);
+    return currentPrices.length > 0
+      ? currentPrices[currentPrices.length - 1].price
       : 0;
   };
 
@@ -33,7 +46,7 @@ const PriceChart: React.FC = () => {
 
   useEffect(() => {
     dispatch(fetchPrices());
-  }, [dispatch]);
+  }, [dispatch, activeCrypto]);
 
   useEffect(() => {
     if (prices.length > 0) {
@@ -48,7 +61,7 @@ const PriceChart: React.FC = () => {
     }, 10000);
 
     return () => clearInterval(interval);
-  }, [dispatch]);
+  }, [dispatch, activeCrypto]);
 
   const highestPrice =
     chartData.length > 0 ? Math.max(...chartData.map((p) => p.price)) : null;
@@ -129,7 +142,7 @@ const PriceChart: React.FC = () => {
       ) : (
         <div className="compact-layout">
           <div className="text-3xl font-bold text-gray-900 text-center mb-2">
-            BTC
+            {activeCryptoConfig.symbol}
           </div>
 
           <div className="price-portfolio-container">

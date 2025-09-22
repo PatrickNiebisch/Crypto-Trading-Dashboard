@@ -4,6 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "../app/store";
 import { buyBTC, sellBTC } from "../features/walletSlice";
+import {
+  selectCurrentCryptoPrices,
+} from "../features/priceSlice";
+
 import "../styles/components/tradedialog.css";
 
 interface TradeDialogProps {
@@ -14,8 +18,9 @@ const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const getCurrentPrice = (state: RootState): number => {
-    return state.price.prices.length > 0
-      ? state.price.prices[state.price.prices.length - 1].price
+    const currentPrices = selectCurrentCryptoPrices(state);
+    return currentPrices.length > 0
+      ? currentPrices[currentPrices.length - 1].price
       : 0;
   };
 
@@ -146,12 +151,8 @@ const TradeDialog: React.FC<TradeDialogProps> = ({ onClose }) => {
             </div>
           </div>
 
-           {error && (
-            <div className="trade-error-message">
-              {error}
-            </div>
-          )}
-          
+          {error && <div className="trade-error-message">{error}</div>}
+
           <div className="trade-dialog-buttons-modern">
             <button
               className="trade-button-modern buy-button"
