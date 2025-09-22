@@ -1,0 +1,15 @@
+services:
+  crypto-trading-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILDKIT_INLINE_CACHE=1
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    container_name: crypto-trading-dashboard
+    restart: unless-stopped
+    env_file:
+      - .env.local
