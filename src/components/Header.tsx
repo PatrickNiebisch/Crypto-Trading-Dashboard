@@ -10,10 +10,10 @@ const Header: React.FC = () => {
 
   return (
     <header className="header">
-      <div className="header-logo">🐘 CryptoTracker</div>
+      <div className="header-logo">🐘</div>
       <div className="header-balance">
         <p>
-          Available: <span>{balance.btc.toFixed(8)} BTC</span>
+          Available: <span>{balance.btc.toFixed(4)} BTC</span>
         </p>
         <p>{balance.eur.toFixed(2)} €</p>
       </div>

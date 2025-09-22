@@ -4,7 +4,6 @@
   @apply mt-8 p-4 bg-gray-100 rounded-lg shadow-md;
 }
 
-
 .trade-history-table {
   @apply w-full text-left border-collapse bg-gray-800 rounded-lg;
 }

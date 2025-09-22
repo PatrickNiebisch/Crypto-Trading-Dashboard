@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .main-view {
-  @apply bg-white text-gray-900 p-4 ;
+  @apply bg-white text-gray-900 p-4;
 }
 
 @media (min-width: 768px) {

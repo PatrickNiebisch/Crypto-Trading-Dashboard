@@ -2,7 +2,7 @@
 
 import TradeHistory from "@/components/TradeHistory";
 import Header from "../components/Header";
-import PriceChart from "../components/PriceChart";
+import PriceChart from "../components/pricechart/PriceChart";
 import TradeDialog from "@/components/TradeDialog";
 import { useState } from "react";
 
@@ -13,14 +13,18 @@ const Home: React.FC = () => {
     <div>
       <Header />
       <PriceChart />
+      <div className="px-4 mb-6">
+        <button
+          className="w-full py-4 bg-slate-800 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-slate-700 transition-colors"
+          onClick={() => setTradeDialogOpen(true)}
+        >
+          Trade
+        </button>
+      </div>
       <TradeHistory />
       {isTradeDialogOpen && (
         <TradeDialog onClose={() => setTradeDialogOpen(false)} />
       )}
-      <button
-        className="fixed bottom-4 right-4 bg-blue-500 text-white px-4 py-2 rounded-lg"
-        onClick={() => setTradeDialogOpen(true)}
-      >Trade</button>
     </div>
   );
 };

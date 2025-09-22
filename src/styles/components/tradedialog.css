@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
 .trade-dialog-overlay {
-  @apply fixed inset-0 bg-gray-900  flex items-center justify-center z-50;
-    background-color: rgba(0, 0, 0, 0.5);
-
+  @apply fixed inset-0 bg-gray-900 flex items-center justify-center z-50;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .trade-dialog {
@@ -32,4 +31,83 @@
 
 .trade-dialog-button {
   @apply bg-gray-800 text-white font-bold py-2 px-4 rounded-md hover:bg-green-600 transition duration-200;
+}
+
+.trade-dialog-modern {
+  @apply bg-white rounded-2xl w-full max-w-sm mx-auto shadow-2xl;
+}
+
+.trade-dialog-header {
+  @apply flex justify-end p-4 pb-2;
+}
+
+.trade-dialog-close-modern {
+  @apply text-gray-400 hover:text-gray-600 transition-colors text-2xl w-8 h-8 flex items-center justify-center;
+}
+
+.trade-dialog-content {
+  @apply px-6 pb-6;
+}
+
+.trade-input-group {
+  @apply mb-6;
+}
+
+.trade-input-group:last-of-type {
+  @apply mb-8;
+}
+
+.trade-input-container {
+  @apply relative;
+}
+
+.trade-input-modern {
+  @apply w-full text-2xl font-medium text-gray-900 bg-transparent border-0 border-b-2 border-gray-200 focus:border-teal-500 focus:outline-none pb-2 pr-16;
+}
+
+.trade-input-modern:focus {
+  @apply border-teal-500;
+}
+
+.trade-input-modern::placeholder {
+  @apply text-gray-400;
+}
+
+.trade-currency-label {
+  @apply absolute right-0 bottom-2 text-gray-400 font-medium text-base;
+}
+
+.trade-dialog-buttons-modern {
+  @apply flex gap-4;
+}
+
+.trade-button-modern {
+  @apply flex-1 text-white font-semibold py-3 px-6 rounded-lg transition-colors;
+}
+
+.buy-button {
+  @apply bg-slate-800 hover:bg-slate-700;
+}
+
+.sell-button {
+  @apply bg-slate-800 hover:bg-slate-700;
+}
+
+.buy-button:hover,
+.sell-button:hover {
+  @apply bg-teal-700;
+}
+
+@media (max-width: 640px) {
+  .trade-dialog-modern {
+    @apply mx-4;
+  }
+
+  .trade-input-modern {
+    @apply text-xl;
+  }
+
+  .trade-button-modern {
+    @apply py-2 text-base;
+  }
 }
