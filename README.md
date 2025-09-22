@@ -1,17 +1,112 @@
-# Crypto-Trading-Dashboard
+# Crypto Trading Dashboard
 
-## Getting Started
+A Next.js application featuring real-time cryptocurrency trading dashboard with Redux state management and interactive charts.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework**: Next.js 15.5.3
+- **Language**: TypeScript
+- **State Management**: Redux Toolkit
+- **Styling**: Tailwind CSS
+- **Charts**: Chart.js with react-chartjs-2
+- **Deployment**: Docker
+
+## Quick Start
+
+### 1. Environment Setup
+
+The app works out of the box with demo data. For real crypto data:
+
+# Edit .env.local and replace "demo" with your API key:
+# NEXT_PUBLIC_COINCAP_API_KEY=your_actual_api_key_here
+# Get free key at: https://coincap.io/api-key
+
+
+### 2. Local Development
 
 ```bash
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 3. Docker Deployment
+
+```bash
+# Build and run with Docker Compose
+docker-compose up --build
+
+# Access at http://localhost:3000
+```
+
+## Data Sources
+
+- **🟡 Demo Data** (Default): Realistic 24h Bitcoin simulation - works immediately
+- **🟢 Live Data**: Real-time Bitcoin prices from CoinCap API (requires free API key)
+
+### Switching to Live Data
+1. Get free API key from [CoinCap.io](https://coincap.io/api-key)
+2. Edit `.env.local`: Replace `demo` with your actual API key
+3. Restart: `docker-compose down && docker-compose up --build`
+
+> **Note for Evaluators**: The app uses demo data by default for immediate evaluation without any setup required.
+
+## Available Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+
+# Docker scripts
+npm run docker:up    # Build and start with Docker
+npm run docker:down  # Stop Docker containers
+npm run docker:fresh # Fresh build without cache
+```
+
+## Project Structure
+
+```
+src/
+├── app/           # Next.js app directory (pages, layouts)
+├── components/    # Reusable React components
+├── features/      # Feature-specific modules (Redux slices)
+└── styles/        # Global styles and Tailwind config
+```
+
+## Environment Variables
+
+| Variable | Description | Default | Result |
+|----------|-------------|---------|--------|
+| `NEXT_PUBLIC_COINCAP_API_KEY=demo` | Demo mode | ✅ Default | 🟡 24h realistic simulation |
+| `NEXT_PUBLIC_COINCAP_API_KEY=your_key` | Live mode | Manual setup | 🟢 Real Bitcoin prices |
+
+## Docker Information
+
+The application uses a multi-stage Docker build optimized for production:
+
+- **Development**: Hot reload with volume mounting
+- **Production**: Standalone build with minimal Alpine Linux image
+- **Port**: 3000 (configurable in docker-compose.yml)
+- **Environment**: Automatically loads .env.local in container
+
+## Development Notes
+
+- Uses Next.js 13+ App Router
+- TypeScript strict mode enabled
+- ESLint configuration for Next.js and TypeScript
+- Tailwind CSS for styling
+- Redux Toolkit for predictable state management
+- Graceful fallback to mock data for reliable demos
+
+## Requirements
+
+- Node.js 18+
+- npm or yarn
+- Docker & Docker Compose (for containerized deployment)
+- CoinCap API key (optional - app works without it)
